@@ -35,7 +35,7 @@ function buscarEpisodio(){
 
 function buscarTemporada(){
   seasonNumber="$1"
-  echo -e "\n${yellowColour}[+]${endColour} ${greenColour}Mostrando todos los capitulos de la temporada.${endColour} ${yellowColour}$seasonNumber${endColour}\n"
+  echo -e "\n${yellowColour}[+]${endColour} ${greenColour}Mostrando todos los capitulos de la temporada${endColour} ${yellowColour}$seasonNumber${endColour}${greenColour}.${endColour}\n"
   curl -s $main_url | js-beautify | grep "\"season\": \"$seasonNumber\"" -B 1 | sed 's/^ *//' | tr -d '"' | tr -d ','
 }
 
