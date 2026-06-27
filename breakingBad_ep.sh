@@ -11,6 +11,10 @@ purpleColour="\e[0;35m\033[1m"
 turquoiseColour="\e[0;36m\033[1m"
 grayColour="\e[0;37m\033[1m"
 
+#Variables Globales
+main_url="https://api.mridul.tech/api/breaking-bad/episodes"
+
+
 function ctrl_c(){
   echo -e "\n\n${redColour}Saliendo...${endColour}\n"
   exit 1
@@ -19,23 +23,24 @@ function ctrl_c(){
 
 function helpPanel(){
   echo -e "\n${yellowColour}[+] Uso:${endColour}\n"
-  echo -e "\t${greenColour}u) Buscar capitulos de la temporada 1.${endColour}\n"
+  echo -e "\t${greenColour}e) Buscar por nombre de episodio.${endColour}\n"
 }
 
 function buscarEpisodio (){
   episodeName="$1"
-  echo -e "\n${yellowColour}[+] Mostrando detalles del capitulo :${endColour} ${greenColour}$episodeName${endColour}\n"
-  curl -s https://www.formulatv.com/series/breaking-bad/capitulos/ | html2text | grep -i -E "Temporada 1" -A 21 | sed 's/_/ /g' | grep "$episodeName" -A 1 -B 1
-}
+  echo -e "\n${yellowColour}[+]${endColour} ${greenColour}Mostrando informacion del episodio${endColour} ${yellowColour}$episodeName${endColour}${greenColour}.${endColour}\n"
+  curl -s $main_url | js-beautify | grep -i -E "$episodeName" -A 4 | tr -d '"' | tr -d ',' | sed 's/^ *//'
+ }
+
 
 trap ctrl_c INT
 
 #Indicadores
 declare -i parameter_counter=0
 
-while getopts "u:h" arg; do 
+while getopts "e:h" arg; do 
   case $arg in 
-    u) episodeName=$OPTARG; let parameter_counter+=1;;
+    e) episodeName=$OPTARG; let parameter_counter+=1;;
     h) ;;
   esac
 done
